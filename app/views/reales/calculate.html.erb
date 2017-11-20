@@ -1,0 +1,342 @@
+<div class="panel panel-default">
+  <div class="panel-heading">Listado de Números aleatorios usados - Total: <%= @a_aleatorios.count%></div>
+  <div class="panel-body" style="height: 400px; overflow-y: auto;">
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <% cont = 0 %>
+          <% @a_aleatorios.each do |row|%>
+          <% cont += 1 %>
+            <% if cont < 10 %>
+                <td><center><%='%.5f' % row%></center></td>
+            <% else %>
+              <td><center><%='%.5f' % row%></center></td>
+            </tr>
+            <% cont = 0 %>
+            <% end %>
+          <% end %>
+
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Prueba de Kolmogorov - Smirnov (K-S) para <%= @a_aleatorios.count%> números pseudo-aleatorios</div>
+  <div class="panel-body">
+    <div class="col-md-6">
+      <table class="table table-bordered datatable">
+        <thead>
+          <tr>
+            <th></th>
+            <th><center>Posición</center></th>
+            <th><center>Número Pseudo-Aleatorio</center></th>
+            <th><center>Número Pseudo-Aleatorio Ordenado</center></th>
+            <th><center>Distribución Acumulada</center></th>
+            <th><center>Desviación Absoluta</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% (0..@con).each do |n|%>
+          <tr>
+            <td></td>
+            <td><center><%= n + 1%></center></td>
+            <td><center><%='%.5f' % @a_aleatorios[n] %></center></td>
+            <td><center><%='%.5f' % @orderable[n]%></center></td>
+            <td><center><%='%.5f' % @dis_acum[n]%></center></td>
+            <td><center><%='%.5f' % @desv_abs[n]%></center></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-md-6">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th colspan="2"><center>Hipótesis nula y alternativa</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><center><strong>H<sub>0</sub></strong></center></td>
+            <td>
+              <p>
+                No hay evidencia suficiente para rechazar la hipotesis nula,
+                por lo tanto los números provienen de una distribución uniforme
+              </p>
+				    </td>
+          </tr>
+          <tr>
+            <td><center><strong>H<sub>1</sub></strong></center></td>
+            <td>
+              <p>
+                Hay evidencia suficiente para rechazar la hipotesis nula,
+                por lo tanto los números no provienen de una distribución uniforme
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-6">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><center>Hipótesis Nula</center></th>
+            <th><center>Hipótesis Alterna</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><h4><center>D<sub>n</sub> < d<sub>&alpha;,n</sub></center></h4></td>
+            <td><h4><center>D<sub>n</sub> ≥ d<sub>&alpha;,n</sub></center></h4></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="col-md-6">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th colspan="2"><center>Resultados de la prueba K-S</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Estadístico de K-S</td>
+            <td><center><strong><%='%.5f' %  @est_ks%></strong></center></td>
+          </tr>
+          <tr>
+            <td>Valor Crítico</td>
+            <td><center><strong><%='%.5f' %  @vc%></strong></center></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-6">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th colspan="2"><center>Conclusión de la prueba K-S</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><center><strong>H<sub>0</sub></strong></center></td>
+            <% if @est_ks < @vc%>
+              <td class="success"><center>No hay evidencia suficiente para rechazar la hipotesis nula...</center></td>
+            <% else %>
+              <td class="danger"><center>Hay evidencia suficiente para rechazar la hipotesis nula...</center></td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Estado del sistema al tiempo T = <%= @T%></div>
+  <div class="panel-body" style="overflow-x:auto;">
+    <table class="table table-bordered datatable" id="datatable">
+      <thead>
+        <tr>
+          <th rowspan="3"></th>
+
+          <th rowspan="3"><center>Tiempo</center></th>
+          <th rowspan="3"><center>Suceso</center></th>
+          <th colspan="6"><center>Estado / Hasta el tiempo</center></th>
+          <th colspan="3"><center>Nº en la fila</center></th>
+          <th colspan="2"><center>Siguiente Llegada</center></th>
+        </tr>
+        <tr>
+          <th colspan="2"><center>Caseta Especial</center></th>
+          <th colspan="2"><center>Caseta General 1</center></th>
+          <th colspan="2"><center>Caseta General 2</center></th>
+          <th rowspan="2"><center>Caseta Especial</center></th>
+          <th rowspan="2"><center>Caseta General 1</center></th>
+          <th rowspan="2"><center>Caseta General 2</center></th>
+          <th rowspan="2"><center>Tiempo</center></th>
+          <th rowspan="2"><center>Tipo</center></th>
+        </tr>
+        <tr>
+          <th><center>Estado</center></th>
+          <th><center>Hasta (T)</center></th>
+          <th><center>Estado</center></th>
+          <th><center>Hasta (T)</center></th>
+          <th><center>Estado</center></th>
+          <th><center>Hasta (T)</center></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @a_result.each do |row|%>
+          <tr>
+            <td></td>
+            <td><center><%='%.5f' % row[0]%></center></td>
+            <% if row[1] != "-" %>
+              <% if row[1] == 0 %>
+                <td><center>Salida</center></td>
+              <% else %>
+              <td><center>Llegada</center></td>
+
+              <% end %>
+            <% else %>
+            <td><center><%= row[1]%></center></td>
+            <% end %>
+
+            <% if row[2] == 0 %>
+              <td><center>I</center></td>
+            <% else %>
+              <td><center>B</center></td>
+            <% end %>
+            <td><center><%='%.5f' % row[3]%></center></td>
+            <% if row[4] == 0 %>
+              <td><center>I</center></td>
+            <% else %>
+              <td><center>B</center></td>
+            <% end %>
+            <td><center><%='%.5f' % row[5]%></center></td>
+            <% if row[6] == 0 %>
+              <td><center>I</center></td>
+            <% else %>
+              <td><center>B</center></td>
+            <% end %>
+            <td><center><%='%.5f' % row[7]%></center></td>
+            <td><center><%= row[8]%></center></td>
+            <td><center><%= row[9]%></center></td>
+            <td><center><%= row[10]%></center></td>
+            <td><center><%='%.5f' % row[11]%></center></td>
+            <% if row[12] == 0 %>
+              <td><center>Especial</center></td>
+            <% else %>
+              <td><center>General</center></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Obtención estadísticas finales al tiempo T = <%= @T%> Segundos</div>
+  <div class="panel-body" style="overflow-x:auto;">
+    <h3>1. Tiempo de espera estimado de un vehículo en cada una de las casetas</h3>
+    <br>
+    <div class="col-md-6 col-md-offset-3">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><center>Caseta</center></th>
+            <th><center>Tiempo de espera estimado (segundos)</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><center>Vehículos especiales</center></td>
+            <td><center><%='%.5f' % (@te_esp/@cont_esp).to_f%></center></td>
+          </tr>
+          <tr>
+            <td><center>General 1</center></td>
+            <td><center><%='%.5f' % (@te_esp/@cont_gral1).to_f%></center></td>
+          </tr>
+          <tr>
+            <td><center>General 2</center></td>
+            <td><center><%='%.5f' % (@te_esp/@cont_gral2).to_f%></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+
+    <div class="clearfix"></div>
+
+    <h3>2. Número promedio de vehículos en cada caseta</h3>
+    <br>
+    <div class="col-md-6 col-md-offset-3">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><center>Caseta</center></th>
+            <th><center>Promedio de vehículos</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><center> Vehículos especiales</center></td>
+            <td><center><%='%.5f' % (@ca_esp).to_f%></center></td>
+          </tr>
+          <tr>
+            <td><center> General 1</center></td>
+            <td><center><%='%.5f' % (@ca_gral1).to_f%></center></td>
+          </tr>
+          <tr>
+            <td><center> General 2</center></td>
+            <td><center><%='%.5f' % (@ca_gral2).to_f%></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+
+    <div class="clearfix"></div>
+
+    <h3>3. Utilización promedio de cada caseta</h3>
+    <br>
+    <div class="col-md-6 col-md-offset-3">
+
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><center>Caseta</center></th>
+            <th><center>Porcentaje de utilización</center></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><center>Vehículos especiales</center></td>
+            <td><center><%='%.5f' % (@oc_esp/@T).to_f%> <strong>(<%='%.2f' % ((@oc_esp/@T).to_f * 100)%>%)</strong></center></td>
+          </tr>
+          <tr>
+            <td><center>General 1</center></td>
+            <td><center><%='%.5f' % (@oc_gral1/@T).to_f%> <strong>(<%='%.2f' % ((@oc_gral1/@T).to_f * 100)%>%)</strong></center></td>
+          </tr>
+          <tr>
+            <td><center>General 2</center></td>
+            <td><center><%='%.5f' % (@oc_gral2/@T).to_f%> <strong>(<%='%.2f' % ((@oc_gral2/@T).to_f * 100)%>%)</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>
+
+  </div>
+</div>
+
+<script>
+  $('.datatable').DataTable( {
+        responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ],
+        order: [ 1, 'asc' ]
+    } );
+</script>

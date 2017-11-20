@@ -1,0 +1,123 @@
+<div class="row">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">Problema de la New Jersey Turnpike Commission - Parámetros iniciales</div>
+    <div class="panel-body">
+      <% flash.each do |key, value| %>
+        <div class="alert alert-<%= key %>"><%= value %></div>
+      <% end %>
+      <%= form_tag("#{calculate_url}", id: :form , :class => "form-horizontal form-label-left") do %>
+
+
+    <div class="form-group">
+      <%= label_tag 'hini', 'Hora Inicial: ', :class => "control-label col-md-4 col-sm-4 col-xs-12"%>
+      <div class="col-md-3 col-sm-3 col-xs-12">
+        <%= time_field_tag "hini", nil,{:class => "form-control"}%>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'hfini', 'Hora Final: ', :class => "control-label col-md-4 col-sm-4 col-xs-12"%>
+      <div class="col-md-3 col-sm-3 col-xs-12">
+        <%= time_field_tag "hfini", nil,{:class => "form-control"}%>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'med_llegada', 'Media de caseta general', :class => "control-label col-md-4 col-sm-4 col-xs-12"%>
+      <div class="col-md-3 col-sm-3 col-xs-12">
+        <%= number_field_tag "med_llegada", nil,{:class => "form-control", :step => "1", :min => "1"}%>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'med_sig', 'Media de caseta especial', :class => "control-label col-md-4 col-sm-4 col-xs-12"%>
+      <div class="col-md-3 col-sm-3 col-xs-12">
+        <%= number_field_tag "med_sig", nil,{:class => "form-control", :step => "1", :min => "1"}%>
+      </div>
+    </div>
+
+
+    <div class="ln_solid"></div>
+    <center>
+      <%= submit_tag "Ejecutar Simulación", id: :simula, :class => "btn btn-success"%>
+      <%= button_tag "Limpiar", type: :reset, :class => "btn btn-danger"%>
+    </center>
+  <% end %>
+
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">Problema de la New Jersey Turnpike Commission - Planteamiento del problema</div>
+    <div class="panel-body">
+      <p>La New Jersey Turnpike Commission es un organismo encargado del
+      mantenimiento de la Autopista de cuota de New Jersey y desea mejorar el flujo de
+      tráfico a través do sus casetas de cobro. Uno de los administradores ha sugerido
+      que se favorezca el paso de vehículos teniendo en servicio casetas especiales
+      para los automóviles con dos o más pasajeros, y el resto de las casetas para el
+      resto del tráfico. A estas casetas especiales se les llama carriles rápidos. La
+      comisión ha seleccionado una de las plazas de cobro como piloto en el desarrollo
+      y evaluación del impacto de la propuesta antes de extender la idea a otras plazas
+      de cobro. Como administrador de operaciones, usted desea determinar el impacto
+      en el flujo de tráfico actual que tendría el hecho de convertir una de las tres
+      casetas de la plaza de cobro en carril rápido, como se muestra en figura 15.1.
+      A través del estudio de datos, la comisión ha determinado que la plaza de cobro
+      seleccionada actualmente atiende 20 vehículos por minuto durante las horas pico.
+      De estos vehículos, solamente un tercio tienen dos o más pasajeros. Los datos
+      también muestran que el tiempo entre dos vehículos que llegan puede ser
+      aproximado por una distribución exponencial, con una tasa promedio de X = 20
+      vehículos por minuto.
+      Los datos registrados anteriormente indican que las casetas que atienden al tráfico
+      en general requieren un tiempo de procesamiento por vehículo que obedece a la
+      siguiente distribución:</p><br>
+
+        <div class="col-md-4 col-md-offset-3">
+          <table class="table">
+            <thead>
+              <tr>
+                <th><center>TIEMPO (Segundos)</center></th>
+                <th>PROBABILIDAD</center></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th><center>3-8</center></th>
+                <th><center>0,60000</center></th>
+              </tr>
+              <tr>
+                <th><center>8-13</center></th>
+                <th><center>0,30000</center></th>
+              </tr>
+              <tr>
+                <th><center>13-18</center></th>
+                <th><center>0,10000</center></th>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="clearfix"></div>
+        <br>
+        <p>
+          No existen datos similares para la caseta rápida propuesta. No se espera que el
+          tiempo de servicio en ésta siga la distribución anterior porque dicha distribución
+          pertenece a autos, camiones y todos los demás vehículos, mientras que la caseta
+          rápida solamente es para automóviles. De la experiencia con casetas rápidas en
+          otras carreteras, usted cree que el tiempo de servicio puede ser aproximado
+          bastante bien por una distribución exponencial, con una tasa media de 10 autos
+          por minuto.
+          Usted debería darse cuenta de que los modelos descritos en el capítulo 13 no se
+          aplican directamente. Una razón de ello es que los tiempos de servicio en las
+          casetas siguen diferentes distribuciones, y una de éstas no es exponencial. Una
+          segunda razón es que los autos con dos o más pasajeros tienen la libertad de
+          escoger una de las tres colas, mientras que todo el resto del tráfico debe unirse a
+          una de las dos colas de las casetas generales. Además, entre las casetas
+          permitidas, cada vehículo escoge la cola más pequeña. Por tales razones, no se
+          pueden aplicar aquí los modelos del capítulo 13. Una simulación ofrece medios
+          razonables para evaluar el sistema.
+        </p>
+
+    </div>
+  </div>
+
+</div>
