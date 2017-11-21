@@ -16,7 +16,7 @@ class RealesController < ApplicationController
     resta = (minutos1 - minutos2).abs * 60
 
     @T = resta
-    
+
 
     # render json: {hora1: hora1, hora2: hora2}
     # render json: {hora1: minutos1, hora2: minutos2, resta: resta}
@@ -521,21 +521,13 @@ class RealesController < ApplicationController
 
   def estado_caseta(cola,tipo)
     arr = []
-    if tipo == 0
-      if cola > 0
-        estado = 1
+    if cola > 0
+      estado = 1
+      if tipo == 0
         aleatorio = rand.to_f.truncate(5)
         @a_aleatorios << aleatorio
         hasta = (-(1 / form_params[:med_sig].to_i.to_f) * 60 * Math.log(1 - aleatorio)).to_f.truncate(5)
       else
-        # Si la caseta está desocupada, se salta este paso
-        estado = 0
-        hasta = 0
-      end
-    else
-      if cola > 0
-        # Si la caseta está ocupada, determina el tiempo de servicio de la misma
-        estado = 1
         aleatorio = rand.to_f.truncate(5)
         @a_aleatorios << aleatorio
         if aleatorio < 0.60000
@@ -545,12 +537,12 @@ class RealesController < ApplicationController
         else
           hasta = (13 + ( 5 * ((aleatorio - 0.90000) / 1.00000))).to_f.truncate(5)
         end
-      else
-        # Si la caseta está desocupada, se salta este paso
-        estado = 0
-        hasta = 0
       end
+    else
+      estado = 0
+      hasta = 0
     end
+
     arr << [estado,hasta]
 
   end
